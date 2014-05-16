@@ -5,6 +5,7 @@ var PLAYER_VELOCITY = 200,
     GROUND_VELOCITY = 30,
     ENEMY_VELOCITY = 200,
     grounds,
+    baseGround,
     player,
     enemy,
     cursors,
@@ -21,12 +22,13 @@ var play_state = {
 
         // Create scene
         game.add.sprite(0, 0, 'sky');
-
+        baseGround = this.game.add.sprite(20, game.world.height - 66, 'ground');
+        game.physics.arcade.enable(baseGround);
+        baseGround.scale.setTo(0.15, 0.5);
+        baseGround.body.immovable = true;
         grounds = game.add.group();
         grounds.enableBody = true;
-        //grounds.createMultiple(20, 'ground');
         groundTimer = this.game.time.events.loop(5000, this.addGrounds, this);
-
 
         // Add player
         this.createPlayer();
@@ -92,6 +94,7 @@ var play_state = {
     // UPDATE
     update: function() {
         // Collides
+        game.physics.arcade.collide(player, baseGround);
         game.physics.arcade.collide(player, grounds);
         game.physics.arcade.collide(enemy, grounds);
         game.physics.arcade.overlap(enemy, player, this.enemyHit, null, this);
@@ -114,7 +117,6 @@ var play_state = {
     },
 
     playerMoves: function() {
-                ///console.log('go UP');
         player.body.velocity.x = 0;
         if (cursors.left.isDown) {
             player.body.velocity.x = -PLAYER_VELOCITY;
@@ -128,7 +130,7 @@ var play_state = {
         }
 
         // J.U.M.P.
-        if (cursors.up.isDown) { //  && player.body.touching.down) {
+        if (cursors.up.isDown && player.body.touching.down) {
             console.log('UP');
             //TODO: if space is down, lower jump
             if (cursors.down.isDown) { // vmi nem jo
