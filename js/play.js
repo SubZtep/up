@@ -1,20 +1,9 @@
-
-/** pontokat kell szerezned, mert megy le az oxigened
-    Minden szinten mas kis feladat var rad
-    Ha a feladatos sikeresen elvegzed, kapsz egy adag oxigent
-    Ha idovel nem tudsz feltankolni, akkor kampec
-*/
 var PLAYER_VELOCITY = 200,
     PLAYER_JUMP_VELOCITY = 700,
     PLAYER_BOUNCE = 0.2,
     PLAYER_GRAVITY = 1500,
     GROUND_VELOCITY = 30,
     ENEMY_VELOCITY = 200,
-
-    STORY = ["You've just arrived to an unexplorerd planet,",
-            "Everything is so interesting,",
-            "Let's explorer it!"],
-
     grounds,
     player,
     enemy,
