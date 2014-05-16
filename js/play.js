@@ -4,8 +4,9 @@ var PLAYER_VELOCITY = 200,
     PLAYER_BOUNCE = 0.2,
     PLAYER_GRAVITY = 1500,
     GROUND_VELOCITY = 30,
-    platforms,
+    grounds,
     player,
+    enemy,
     cursors,
     healthText,
     invulnerable = 0,
@@ -31,14 +32,15 @@ var play_state = {
         this.createPlayer();
 
         // Add enemy
-        //this.createEnemy();
+        this.createEnemy();
+        //this.game.time.events.loop(8000, this.createEnemy, this);
 
         // Control
         cursors = game.input.keyboard.createCursorKeys();
 
         // Text
-        /*healthText = game.add.text(8, 8, '', { fontSize: '24px', fill: '#000' });
-        this.updateHealthText();*/
+        healthText = game.add.text(8, 8, '', { fontSize: '16px', fill: '#000' });
+        this.updateHealthText();
 
     },
 
@@ -75,6 +77,7 @@ var play_state = {
     },
 
     createEnemy: function() {
+        console.log('create enemy');
         enemy = game.add.sprite(0, 0, 'baddie');
         game.physics.arcade.enable(enemy);
         enemy.body.collideWorldBounds = true;
@@ -90,28 +93,28 @@ var play_state = {
     update: function() {
         // Collides
         game.physics.arcade.collide(player, grounds);
-        //game.physics.arcade.collide(enemy, platforms);
-        //game.physics.arcade.overlap(enemy, player, this.enemyHit, null, this);
+        game.physics.arcade.collide(enemy, grounds);
+        game.physics.arcade.overlap(enemy, player, this.enemyHit, null, this);
 
         // Player moves
         this.playerMoves();
 
         // enemy hit the wall
-        //this.enemyMoves();
+        this.enemyMoves();
 
         // blink after damage
-        /*if (invulnerable > 0) {
+        if (invulnerable > 0) {
             hitTimer += game.time.elapsed;
             if (hitTimer >= 50) {
                 hitTimer -= 50;
                 player.visible = ! player.visible;
                 invulnerable--;
             }
-        }*/
+        }
     },
 
     playerMoves: function() {
-                console.log('go UP');
+                ///console.log('go UP');
         player.body.velocity.x = 0;
         if (cursors.left.isDown) {
             player.body.velocity.x = -PLAYER_VELOCITY;
@@ -123,9 +126,11 @@ var play_state = {
             player.animations.stop();
             player.frame = 4;
         }
-        //if (cursors.up.isDown && player.body.touching.down) {
-        if (cursors.up.isDown) {
+
+        // J.U.M.P.
+        if (cursors.up.isDown) { //  && player.body.touching.down) {
             console.log('UP');
+            //TODO: if space is down, lower jump
             player.body.velocity.y = -PLAYER_JUMP_VELOCITY;
         }
     },
