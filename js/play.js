@@ -1,9 +1,20 @@
 
+/** pontokat kell szerezned, mert megy le az oxigened
+    Minden szinten mas kis feladat var rad
+    Ha a feladatos sikeresen elvegzed, kapsz egy adag oxigent
+    Ha idovel nem tudsz feltankolni, akkor kampec
+*/
 var PLAYER_VELOCITY = 200,
     PLAYER_JUMP_VELOCITY = 700,
     PLAYER_BOUNCE = 0.2,
     PLAYER_GRAVITY = 1500,
     GROUND_VELOCITY = 30,
+    ENEMY_VELOCITY = 200,
+
+    STORY = ["You've just arrived to an unexplorerd planet,",
+            "Everything is so interesting,",
+            "Let's explorer it!"],
+
     grounds,
     player,
     enemy,
@@ -83,7 +94,7 @@ var play_state = {
         enemy.body.collideWorldBounds = true;
         enemy.body.bounce.y = 0.1;
         enemy.body.gravity.y = 450;
-        enemy.body.velocity.x = 200;
+        enemy.body.velocity.x = 240;
         enemy.animations.add('left', [0, 1], 10, true);
         enemy.animations.add('right', [2, 3], 10, true);
         enemy.animations.play('right');
@@ -131,7 +142,11 @@ var play_state = {
         if (cursors.up.isDown) { //  && player.body.touching.down) {
             console.log('UP');
             //TODO: if space is down, lower jump
-            player.body.velocity.y = -PLAYER_JUMP_VELOCITY;
+            if (cursors.down.isDown) { // vmi nem jo
+                player.body.velocity.y = -PLAYER_JUMP_VELOCITY / 2;
+            } else {
+                player.body.velocity.y = -PLAYER_JUMP_VELOCITY;
+            }
         }
     },
 
@@ -139,10 +154,10 @@ var play_state = {
         if (enemy.body.velocity.x == 0) {
             if (enemy.animations.currentAnim.name == 'left') {
                 enemy.animations.play('right');
-                enemy.body.velocity.x = 200;
+                enemy.body.velocity.x = ENEMY_VELOCITY;
             } else {
                 enemy.animations.play('left');
-                enemy.body.velocity.x = -200;
+                enemy.body.velocity.x = -ENEMY_VELOCITY;
             }
         }
     },
