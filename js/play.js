@@ -132,12 +132,10 @@ var play_state = {
         // J.U.M.P.
         if (cursors.up.isDown && player.body.touching.down) {
             console.log('UP');
-            //TODO: if space is down, lower jump
-            if (cursors.down.isDown) { // vmi nem jo
-                player.body.velocity.y = -PLAYER_JUMP_VELOCITY / 2;
-            } else {
-                player.body.velocity.y = -PLAYER_JUMP_VELOCITY;
-            }
+            //TODO: short press -> small jump
+            player.body.velocity.y = -PLAYER_JUMP_VELOCITY;
+        } else if (cursors.down.isDown && ! player.body.touching.down) {
+            player.body.velocity.y = PLAYER_JUMP_VELOCITY;
         }
     },
 
